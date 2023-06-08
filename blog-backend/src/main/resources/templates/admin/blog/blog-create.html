@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout/layoutadmin :: main-fragment(~{:: title}, ~{:: #link}, ~{:: .content-wrapper}, ~{:: #blogjs})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>AdminLTE 3 | Dashboard</title>
+
+    <th:block id="link">
+        <link rel="stylesheet" th:href="@{https://unpkg.com/easymde/dist/easymde.min.css}"/>
+        <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css}"/>
+
+        <link rel="stylesheet" th:href="@{/plugins/select2/css/select2.min.css}"/>
+        <link rel="stylesheet" th:href="@{/dist/css/style.css}">
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/admin}">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="#">Blog</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Tạo bài viết
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row py-2">
+                    <div class="col-6">
+                        <button class="btn btn-default" type="button">
+                            <i class="fas fa-chevron-left"></i> Quay lại
+                        </button>
+                        <button class="btn btn-info px-4" type="button">
+                            Lưu
+                        </button>
+                        <button class="btn btn-primary px-4" type="button">
+                            Preview
+                        </button>
+                    </div>
+
+                    <div class="col-6 d-flex justify-content-end">
+                        <button class="btn btn-danger px-4" type="button">
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>Tiêu đề</label>
+                                            <input class="form-control" id="title" type="text"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Nội dung</label>
+                                            <textarea id="content"></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Mô tả ngắn</label>
+                                            <textarea class="form-control" id="description" rows="3"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Trạng thái</label>
+                                            <select class="form-control" id="status">
+                                                <option value="0">
+                                                    Nháp
+                                                </option>
+                                                <option value="1">
+                                                    Công khai
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Danh mục</label>
+                                            <div class="select2-purple">
+                                                <select class="select2 form-control" id="category" multiple="multiple">
+                                                    <option>
+                                                        Java
+                                                    </option>
+                                                    <option>
+                                                        Golang
+                                                    </option>
+                                                    <option>
+                                                        React
+                                                    </option>
+                                                    <option>
+                                                        Lập trình web
+                                                    </option>
+                                                    <option>
+                                                        Database
+                                                    </option>
+                                                    <option>
+                                                        Tips Trick
+                                                    </option>
+                                                    <option>
+                                                        Devops
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="thumbnail-preview-container mb-3">
+                                                <img alt="" id="thumbnail" src=""/>
+                                            </div>
+                                            <button class="btn btn-info btn-flat" data-target="#modal-xl" data-toggle="modal"
+                                                    type="button">
+                                                Chọn hình ảnh
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div aria-hidden="true" class="modal fade" id="modal-xl">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Extra Large Modal</h4>
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>One fine body…</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button class="btn btn-default" data-dismiss="modal" type="button">
+                            Close
+                        </button>
+                        <button class="btn btn-primary" type="button">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block id="blogjs">
+    <script th:src="@{https://unpkg.com/easymde/dist/easymde.min.js}"></script>
+    <script th:src="@{https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js}"></script>
+    <script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
+
+
+    <script>
+        //Initialize Select2 Elements
+        $(".select2").select2();
+
+        // Initialize editor
+        const easyMDE = new EasyMDE({
+            element: document.getElementById("content"),
+            spellChecker: false,
+            maxHeight: "500px",
+            renderingConfig: {
+                codeSyntaxHighlighting: true,
+            },
+        });
+    </script>
+</th:block>
+
+
+</body>
+
+</html>
