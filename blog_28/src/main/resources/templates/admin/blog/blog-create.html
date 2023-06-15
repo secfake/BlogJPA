@@ -47,7 +47,7 @@
                     <button type="button" class="btn btn-default">
                         <i class="fas fa-chevron-left"></i> Quay lại
                     </button>
-                    <button type="button" class="btn btn-info px-4" id="btn-create" th:onclick="createBlog()">
+                    <button type="button" class="btn btn-info px-4" id="btn-create">
                         Lưu
                     </button>
                 </div>
@@ -62,6 +62,7 @@
                                     <div class="form-group">
                                         <label>Tiêu đề</label>
                                         <input type="text" class="form-control" id="title"/>
+                                        <small id="error-title" class="text-red"></small>
                                     </div>
 
                                     <div class="form-group">
@@ -79,10 +80,10 @@
                                     <div class="form-group">
                                         <label>Trạng thái</label>
                                         <select id="status" class="form-control">
-                                            <option value="0">
+                                            <option value="false">
                                                 Nháp
                                             </option>
-                                            <option value="1">
+                                            <option value="true">
                                                 Công khai
                                             </option>
                                         </select>
@@ -130,52 +131,55 @@
                 codeSyntaxHighlighting: true,
             },
         });
+
+
     </script>
 
 
     <script th:inline="javascript">
         // tạo blog
-        const createBlog = () => {
+        const btnCreate = document.getElementById("btn-create");
+        btnCreate.addEventListener("click", async () => {
             let newBlog = {}
             newBlog.title = $("#title").val()
             newBlog.description = $("#description").val();
             newBlog.content = easyMDE.value();
             newBlog.thumbnail = $("#thumbnail").attr("src");
-            newBlog.status = $('#status').val() == 1 ? true : false;
+            newBlog.status = $('#status').val();
             newBlog.categoryIds = $('#category').val();
             console.log(newBlog)// đôi tượng update
-
-            // gọi api
-            fetch(`/api/v1/admin/blogs`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(newBlog)
-            })
-                .then((res) => {
-                    if (res.status === 201) {
-                        res.json().then((data) => {
-                            window.location.replace(data.url);
-                        });
-                    }
+            if (newBlog.title == "") {
+                document.getElementById("error-title").innerText = "Tiêu đề không được để trống"
+            } else {
+                // gọi api
+                await fetch(`/api/v1/admin/blogs`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(newBlog)
                 })
-                .catch(err => {
-                    console.log(err)
-                });
+                    .then((res) => {
+                        if (res.status === 201) {
+                            res.json().then((data) => {
+                                toastr.success("Tạo thành công")
+                                setTimeout(() => {
+                                    window.location.replace(data.url);
+                                }, 1500)
+                            });
+                        } else {
+                            res.json().then((data) => {
+                                toastr.success(data.message)
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    });
+            }
 
 
-        }
-
-
-        // then(response => response.json())
-        //         .then(data => {
-        //           console.log(data);
-        //         })
-        //         .catch(err => {
-        //           console.log(err)
-        //         });
-
+        })
 
 
     </script>

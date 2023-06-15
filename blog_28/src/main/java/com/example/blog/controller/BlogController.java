@@ -56,6 +56,7 @@ public class BlogController {
         model.addAttribute("blog", blogService.getBlogById(id));
         model.addAttribute("categories", categoryService.getCategories());
         return "admin/blog/blog-detail";
+
     }
 
 

@@ -31,6 +31,8 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
     @Query("select b from Blog b where b.id = ?1")
     Optional<BlogPublic> findBlogById(Integer id);
 
+    boolean existsByTitleEqualsIgnoreCase(String title);
+
 
 
 }

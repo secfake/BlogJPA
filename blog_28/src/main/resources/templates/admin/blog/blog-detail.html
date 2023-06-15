@@ -179,7 +179,7 @@
             $("#description").html(data.description);
             $("#status").val(data.status ? 1 : 0);
             $("#category").val(data.categories.map((c) => c.id)).trigger("change");
-            $("#thumbnail").attr("src", data.thumbnail);
+            $("#thumbnail").attr("src", data.thumbnail ? data.thumbnail : "https://placehold.co/600x400");
         };
 
         console.log(blog);
@@ -197,7 +197,11 @@
                     .then((res) => {
                         if (res.status === 200) {
                             // window.confirm("Xóa thành công");
-                            window.location.href = "/admin/blogs/own-blogs";
+                            toastr.success("Xóa thành công")
+                            setTimeout(() => {
+                                window.location.href = "/admin/blogs/own-blogs";
+                            },1500)
+
                         }
                     })
                     .catch(err => {
@@ -212,7 +216,7 @@
             newBlog.title = $("#title").val()
             newBlog.description = $("#description").val();
             newBlog.content = easyMDE.value();
-            newBlog.thumbnail = $("#thumbnail").attr("src");
+            newBlog.thumbnail = $("#thumbnail").attr("src") =="https://placehold.co/600x400" ? null : $("#thumbnail").attr("src");
             newBlog.status = $('#status').val() == 1 ? true : false;
             newBlog.categoryIds = $('#category').val();
             console.log(newBlog)// đôi tượng update
@@ -228,6 +232,7 @@
             })
                 .then((res) => {
                     if (res.status === 200) {
+                        toastr.success("Lưu thành công")
                         document.getElementById("newTitle").innerText = newBlog.title;
                     }
                 })

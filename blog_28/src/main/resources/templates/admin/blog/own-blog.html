@@ -118,7 +118,7 @@
                 }).join("")}
                                     </td>
                                     <td>${blog.status ? 'Công khai' : 'Nháp'}</td>
-                                    <td>${blog.createdAt}</td>
+                                    <td>${formatData(blog.createdAt)}</td>
                                 </tr>
                 `
             })
@@ -135,6 +135,17 @@
                     renderBlogs(data);
                 }
             })
+        }
+
+
+
+        const formatData = (dataString) => {
+            const date = new Date(dataString);
+            const year = date.getFullYear();
+            const month = `0${date.getMonth() + 1}`.slice(-2);
+            const day = `0${date.getDate() + 1}`.slice(-2);
+
+            return `${day}/${month}/${year}`;
         }
 
         renderPagination();

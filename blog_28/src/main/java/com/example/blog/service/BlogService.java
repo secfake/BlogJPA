@@ -4,6 +4,7 @@ import com.example.blog.dto.projection.BlogPublic;
 import com.example.blog.entity.Blog;
 import com.example.blog.entity.Category;
 import com.example.blog.entity.User;
+import com.example.blog.exception.BadRequestException;
 import com.example.blog.exception.NotFoundException;
 import com.example.blog.repository.BlogRepository;
 import com.example.blog.repository.CategoryRepository;
@@ -57,6 +58,9 @@ public class BlogService {
     public newBlogResponse createBlog(UpsertBlogRequest upsertBlogRequest) {
         // TODO : Hiện tại fix userId. Sau này userId chính là user đang login
         Integer userId = 1;
+        if (blogRepository.existsByTitleEqualsIgnoreCase(upsertBlogRequest.getTitle())){
+            throw new BadRequestException("Blog title already exist");
+        }
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Not found user"));
         List<Category> categories = categoryRepository.findByIdIn(upsertBlogRequest.getCategoryIds());
         Slugify slugify = Slugify.builder().build();

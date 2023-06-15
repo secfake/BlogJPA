@@ -18,7 +18,7 @@ public class CategoryController {
     //    Lấy ds category (có phân trang, mặc định là pageSize = 10) (Trả về Giao diện)
     @GetMapping("/admin/categories")
     public String getAllCategory(@RequestParam(required = false, defaultValue = "1") Integer page,
-                                 @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                 @RequestParam(required = false, defaultValue = "5") Integer pageSize,
                                  Model model) {
         Page<CategoryWebPublic> categoryWebPublicPage = categoryService.getAllCategory(page, pageSize);
         model.addAttribute("page", categoryWebPublicPage);
@@ -35,7 +35,7 @@ public class CategoryController {
     @PostMapping("/api/v1/admin/categories")
     public ResponseEntity<?> createCatogory(@RequestBody UpsertCategoryRequest upsertCategoryRequest) {
         categoryService.createCategory(upsertCategoryRequest);
-        return ResponseEntity.ok("successful create");
+        return ResponseEntity.status(201).body("successful create");
 
     }
 
